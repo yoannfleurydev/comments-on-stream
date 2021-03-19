@@ -1,0 +1,27 @@
+{
+  "name": "comments-on-stream",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/yoannfleurydev/comments-on-stream",
+  "author": "Yoann Fleury <yoann.fleury@yahoo.com>",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "start": "ts-node-dev src/index.ts"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "nedb": "^1.8.0",
+    "tmi.js": "^1.7.5"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.10",
+    "@types/express": "^4.17.11",
+    "@types/nedb": "^1.8.11",
+    "@types/node": "^14.14.35",
+    "@types/tmi.js": "^1.7.1",
+    "ts-node-dev": "^1.1.6",
+    "typescript": "^4.2.3"
+  }
+}
