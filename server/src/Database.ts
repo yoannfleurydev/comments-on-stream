@@ -19,4 +19,3 @@ class Database {
 export default Database;
 
 export const messagesRepository = new Database("messages");
-export const questionsRepository = new Database("questions");

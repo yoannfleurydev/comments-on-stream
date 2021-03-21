@@ -13,9 +13,12 @@ client.connect().then(() => console.log("tmi connected"));
 client.on("message", (channel, tags, content, self) => {
   console.log(`${tags["display-name"]}: ${content}`);
 
+  console.log(tags);
+
   const message: Message = {
     content,
     displayName: tags["display-name"],
+    datetime: tags["tmi-sent-ts"],
   };
 
   messagesRepository.datastore.insert(message);

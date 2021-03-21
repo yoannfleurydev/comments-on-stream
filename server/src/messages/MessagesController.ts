@@ -1,6 +1,11 @@
 import { Router } from "express";
 import Controller from "../Controller";
-import { getMessage, getMessages } from "./MessagesService";
+import {
+  getMessage,
+  getMessages,
+  deleteMessages,
+  updateMessage,
+} from "./MessagesService";
 
 class MessagesController implements Controller {
   _router: Router;
@@ -12,6 +17,8 @@ class MessagesController implements Controller {
   routes(): Router {
     this._router.get("/", getMessages);
     this._router.get("/:id", getMessage);
+    this._router.delete("/", deleteMessages);
+    this._router.put("/:id", updateMessage);
 
     return this._router;
   }

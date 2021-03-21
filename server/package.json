@@ -1,13 +1,13 @@
 {
-  "name": "comments-on-stream",
+  "name": "comments-on-stream-server",
   "version": "1.0.0",
-  "main": "index.js",
   "repository": "https://github.com/yoannfleurydev/comments-on-stream",
   "author": "Yoann Fleury <yoann.fleury@yahoo.com>",
   "license": "MIT",
   "private": true,
   "scripts": {
-    "start": "ts-node-dev src/index.ts"
+    "dev": "ts-node-dev src/index.ts",
+    "start:watch": "yarn dev"
   },
   "dependencies": {
     "cors": "^2.8.5",
