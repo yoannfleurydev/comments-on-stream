@@ -4,15 +4,19 @@ import {
   Flex,
   Heading,
   Text,
-  Icon,
-  HStack,
+  Stack,
+  Button,
+  ButtonGroup,
 } from "@chakra-ui/react";
-import { useQuery } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
+import { FaEye, FaTrash } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
-import { FaEye, FaUser } from "react-icons/fa";
-import { getQuestions } from "../../services/Messages";
+import { getQuestions, putMessage } from "../../services/Messages";
+import { Card } from "./Card";
+import { Empty } from "./Empty";
 
 export const Questions = (props) => {
+  const queryClient = useQueryClient();
   const { data: questions, error, isLoading } = useQuery(
     "questions",
     getQuestions,
@@ -20,6 +24,17 @@ export const Questions = (props) => {
       refetchInterval: 1000,
     }
   );
+
+  const isQuestionMutation = useMutation(putMessage, {
+    onSettled: () => {
+      queryClient.invalidateQueries("questions");
+      queryClient.invalidateQueries("messages");
+    },
+  });
+
+  const handleSetIsQuestion = (message) => {
+    isQuestionMutation.mutate({ ...message, isQuestion: !message.isQuestion });
+  };
 
   if (isLoading) return "Récupération des questions...";
   if (error) return "Une erreur est survenue: " + error.message;
@@ -35,47 +50,25 @@ export const Questions = (props) => {
           // onClick={handleRemoveAll}
         />
       </Flex>
-      <Box mt={4}>
+      <Box mt={4} height="87vh" overflow="auto">
         {questions.length === 0 ? (
-          <Box>
-            <Text>Aucune question sélectionnée pour le moment</Text>
-          </Box>
+          <Empty>Aucune question sélectionnée pour le moment</Empty>
         ) : (
-          questions.map((question) => (
-            <Flex
-              shadow="base"
-              p="2"
-              rounded="md"
-              bg="white"
-              key={question._id}
-              mt={2}
-              px={2}
-              justifyContent="space-between"
-            >
-              <Box>
-                <Flex alignItems="center">
-                  <Icon as={FaUser} />{" "}
-                  <Text fontSize="sm" ml={2}>
-                    {question.displayName}
-                  </Text>
-                </Flex>
-                <Text mt={2}>{question.content}</Text>
-              </Box>
-
-              <HStack spacing={2}>
-                <IconButton
-                  aria-label="Supprimer la question"
-                  icon={<MdDelete />}
-                  colorScheme="red"
-                  variant="ghost"
-                />
-                <IconButton
-                  aria-label="Afficher la question"
-                  icon={<FaEye />}
-                />
-              </HStack>
-            </Flex>
-          ))
+          <Stack spacing={2}>
+            {questions.map((question) => (
+              <Card key={question._id} message={question}>
+                <ButtonGroup size="xs">
+                  <Button
+                    leftIcon={<FaTrash />}
+                    onClick={() => handleSetIsQuestion(question)}
+                  >
+                    Supprimer
+                  </Button>
+                  <Button leftIcon={<FaEye />}>Afficher</Button>
+                </ButtonGroup>
+              </Card>
+            ))}
+          </Stack>
         )}
       </Box>
     </Box>

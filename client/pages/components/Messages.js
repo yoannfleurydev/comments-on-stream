@@ -6,15 +6,17 @@ import {
   Text,
   Icon,
   Stack,
+  Button,
 } from "@chakra-ui/react";
 import { useMutation, useQuery, useQueryClient } from "react-query";
-import { FaUser } from "react-icons/fa";
 import { MdCheck, MdDelete } from "react-icons/md";
 import {
   putMessage,
   deleteMessages,
   getMessages,
 } from "../../services/Messages";
+import { Card } from "./Card";
+import { Empty } from "./Empty";
 
 export const Messages = (props) => {
   const queryClient = useQueryClient();
@@ -39,7 +41,15 @@ export const Messages = (props) => {
   };
 
   const handleSetIsQuestion = (message) => {
-    isQuestionMutation.mutate({ ...message, isQuestion: !message.isQuestion });
+    isQuestionMutation.mutate(
+      { ...message, isQuestion: !message.isQuestion },
+      {
+        onSettled: () => {
+          queryClient.invalidateQueries("questions");
+          queryClient.invalidateQueries("messages");
+        },
+      }
+    );
   };
 
   if (isLoading) return "Récupération des messages...";
@@ -57,42 +67,26 @@ export const Messages = (props) => {
           isLoading={isLoading}
         />
       </Flex>
-      <Stack mt={4} spacing={2}>
+      <Box height="87vh" overflow="auto" mt={4}>
         {messages.length === 0 ? (
-          <Box>
-            <Text>Aucun message disponible pour le moment</Text>
-          </Box>
+          <Empty>Aucun message disponible pour le moment</Empty>
         ) : (
-          messages.map((message) => (
-            <Flex
-              shadow="base"
-              p="2"
-              rounded="md"
-              bg="white"
-              key={message._id}
-              px={2}
-              justifyContent="space-between"
-            >
-              <Box>
-                <Flex alignItems="center">
-                  <Icon as={FaUser} />{" "}
-                  <Text fontSize="sm" ml={2}>
-                    {message.displayName}
-                  </Text>
-                </Flex>
-                <Text mt={2}>{message.content}</Text>
-              </Box>
-
-              <IconButton
-                aria-label="Ajouter aux questions"
-                icon={<MdCheck />}
-                onClick={() => handleSetIsQuestion(message)}
-                colorScheme={message.isQuestion ? "green" : "gray"}
-              />
-            </Flex>
-          ))
+          <Stack spacing={2}>
+            {messages.map((message) => (
+              <Card message={message} key={message._id}>
+                <Button
+                  size="xs"
+                  leftIcon={<MdCheck />}
+                  onClick={() => handleSetIsQuestion(message)}
+                  colorScheme={message.isQuestion ? "green" : "gray"}
+                >
+                  Add question
+                </Button>
+              </Card>
+            ))}
+          </Stack>
         )}
-      </Stack>
+      </Box>
     </Box>
   );
 };
