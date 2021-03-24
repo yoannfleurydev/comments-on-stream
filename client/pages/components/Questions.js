@@ -3,17 +3,15 @@ import {
   IconButton,
   Flex,
   Heading,
-  Text,
   Stack,
   Button,
-  ButtonGroup,
 } from "@chakra-ui/react";
 import { useMutation, useQuery, useQueryClient } from "react-query";
-import { FaEye, FaTrash } from "react-icons/fa";
+import { FaEye } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 import { getQuestions, putMessage } from "../../services/Messages";
-import { Card } from "./Card";
 import { Empty } from "./Empty";
+import { Question } from "./Question";
 
 export const Questions = (props) => {
   const queryClient = useQueryClient();
@@ -40,7 +38,7 @@ export const Questions = (props) => {
   if (error) return "Une erreur est survenue: " + error.message;
 
   return (
-    <Box m="1rem" {...props}>
+    <Box {...props}>
       <Flex justifyContent="space-between">
         <Heading>Questions</Heading>
         <IconButton
@@ -56,17 +54,7 @@ export const Questions = (props) => {
         ) : (
           <Stack spacing={2}>
             {questions.map((question) => (
-              <Card key={question._id} message={question}>
-                <ButtonGroup size="xs">
-                  <Button
-                    leftIcon={<FaTrash />}
-                    onClick={() => handleSetIsQuestion(question)}
-                  >
-                    Supprimer
-                  </Button>
-                  <Button leftIcon={<FaEye />}>Afficher</Button>
-                </ButtonGroup>
-              </Card>
+              <Question key={question._id} question={question} />
             ))}
           </Stack>
         )}

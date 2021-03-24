@@ -1,21 +1,12 @@
-import {
-  Box,
-  IconButton,
-  Flex,
-  Heading,
-  Text,
-  Icon,
-  Stack,
-  Button,
-} from "@chakra-ui/react";
+import { Box, IconButton, Flex, Heading, Stack } from "@chakra-ui/react";
 import { useMutation, useQuery, useQueryClient } from "react-query";
-import { MdCheck, MdDelete } from "react-icons/md";
+import { MdDelete } from "react-icons/md";
 import {
   putMessage,
   deleteMessages,
   getMessages,
 } from "../../services/Messages";
-import { Card } from "./Card";
+import { Message } from "./Message";
 import { Empty } from "./Empty";
 
 export const Messages = (props) => {
@@ -32,31 +23,20 @@ export const Messages = (props) => {
     onMutate: async () => {
       queryClient.setQueryData("messages", () => []);
     },
+    onSettled: () => {
+      queryClient.invalidateQueries("questions");
+    },
   });
-
-  const isQuestionMutation = useMutation(putMessage);
 
   const handleRemoveAll = () => {
     deleteAllMessagesMutation.mutate();
-  };
-
-  const handleSetIsQuestion = (message) => {
-    isQuestionMutation.mutate(
-      { ...message, isQuestion: !message.isQuestion },
-      {
-        onSettled: () => {
-          queryClient.invalidateQueries("questions");
-          queryClient.invalidateQueries("messages");
-        },
-      }
-    );
   };
 
   if (isLoading) return "Récupération des messages...";
   if (error) return "Une erreur est survenue: " + error.message;
 
   return (
-    <Box m="1rem" {...props}>
+    <Box {...props}>
       <Flex justifyContent="space-between">
         <Heading>Messages</Heading>
         <IconButton
@@ -73,16 +53,7 @@ export const Messages = (props) => {
         ) : (
           <Stack spacing={2}>
             {messages.map((message) => (
-              <Card message={message} key={message._id}>
-                <Button
-                  size="xs"
-                  leftIcon={<MdCheck />}
-                  onClick={() => handleSetIsQuestion(message)}
-                  colorScheme={message.isQuestion ? "green" : "gray"}
-                >
-                  Add question
-                </Button>
-              </Card>
+              <Message key={message._id} message={message} />
             ))}
           </Stack>
         )}

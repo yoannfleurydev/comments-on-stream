@@ -4,7 +4,7 @@ import { Questions } from "./components/Questions";
 
 export default function Home() {
   return (
-    <SimpleGrid columns={3} spacing={8}>
+    <SimpleGrid columns={3} spacing={4} m={4}>
       <Messages />
       <Questions />
     </SimpleGrid>
