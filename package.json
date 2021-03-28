@@ -1,0 +1,7 @@
+{
+  "scripts": {
+    "install": "yarn install:client && yarn install:server",
+    "install:client": "cd client && yarn install",
+    "install:server": "cd server && yarn install"
+  }
+}
