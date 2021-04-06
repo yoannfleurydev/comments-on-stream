@@ -3,4 +3,6 @@ export type Message = {
   content: string;
   displayName?: string;
   datetime?: string;
+  isQuestion?: boolean;
+  isLive?: boolean;
 };

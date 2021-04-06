@@ -1,6 +1,11 @@
 import { Router } from "express";
 import Controller from "../Controller";
-import { getQuestions } from "../messages/MessagesService";
+import {
+  getQuestions,
+  postQuestion,
+  getLiveQuestion,
+  updateQuestion,
+} from "../messages/MessagesService";
 
 class QuestionsController implements Controller {
   _router: Router;
@@ -11,6 +16,10 @@ class QuestionsController implements Controller {
 
   routes(): Router {
     this._router.get("/", getQuestions);
+    this._router.post("/", postQuestion);
+    this._router.put("/:id", updateQuestion);
+
+    this._router.get("/live", getLiveQuestion);
 
     return this._router;
   }

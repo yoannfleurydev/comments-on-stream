@@ -7,9 +7,8 @@ import {
   Button,
 } from "@chakra-ui/react";
 import { useMutation, useQuery, useQueryClient } from "react-query";
-import { FaEye } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
-import { getQuestions, putMessage } from "../../services/Messages";
+import { getQuestions, putMessage } from "../services/Messages";
 import { Empty } from "./Empty";
 import { Question } from "./Question";
 

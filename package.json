@@ -1,7 +1,10 @@
 {
+  "license": "MIT",
   "scripts": {
     "install": "yarn install:client && yarn install:server",
     "install:client": "cd client && yarn install",
-    "install:server": "cd server && yarn install"
+    "install:server": "cd server && yarn install",
+    "start:client": "cd client && yarn dev",
+    "start:server": "cd server && yarn start"
   }
 }

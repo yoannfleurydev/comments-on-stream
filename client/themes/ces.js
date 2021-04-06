@@ -20,7 +20,7 @@ export const ces = extendTheme({
   styles: {
     global: {
       body: {
-        backgroundColor: "brand.50",
+        backgroundColor: "gray.50",
       },
       a: {
         boxShadow: "none",

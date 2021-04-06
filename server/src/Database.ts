@@ -19,3 +19,7 @@ class Database {
 export default Database;
 
 export const messagesRepository = new Database("messages");
+
+// https://github.com/louischatriot/nedb#persistence
+// This line will set up the autocompaction of the files
+messagesRepository.datastore.persistence.setAutocompactionInterval(20000);

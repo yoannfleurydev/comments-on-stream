@@ -1,11 +1,7 @@
 import { Box, IconButton, Flex, Heading, Stack } from "@chakra-ui/react";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { MdDelete } from "react-icons/md";
-import {
-  putMessage,
-  deleteMessages,
-  getMessages,
-} from "../../services/Messages";
+import { deleteMessages, getMessages } from "../services/Messages";
 import { Message } from "./Message";
 import { Empty } from "./Empty";
 

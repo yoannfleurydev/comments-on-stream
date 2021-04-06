@@ -1,6 +1,7 @@
 import express from "express";
 import MessagesController from "./messages/MessagesController";
 import QuestionsController from "./questions/QuestionsController";
+import InfoController from "./info/InfoController";
 import cors from "cors";
 
 class App {
@@ -14,11 +15,13 @@ class App {
   }
 
   private mountRoutes() {
-    let messagesController = new MessagesController();
-    let questionsController = new QuestionsController();
+    const messagesController = new MessagesController();
+    const questionsController = new QuestionsController();
+    const infoController = new InfoController();
 
     this.express.use("/api/messages", messagesController.routes());
     this.express.use("/api/questions", questionsController.routes());
+    this.express.use("/api/info", infoController.routes());
   }
 }
 

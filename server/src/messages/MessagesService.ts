@@ -57,9 +57,14 @@ export const deleteMessages = (_: Request, res: Response) => {
 
 export const updateMessage = (req: Request, res: Response) => {
   const id = req.params.id;
-  const body = req.body;
+  let body = req.body as Message;
 
   console.log(`Updating message ${id} with body ${JSON.stringify(body)}`);
+
+  // If the message is not a question anymore, it should not be live
+  if (!body?.isQuestion) {
+    body = { ...body, isLive: false };
+  }
 
   messagesRepository.datastore.update(
     { _id: id },
@@ -91,4 +96,61 @@ export const getQuestions = (_: Request, res: Response) => {
 
       res.json(messages);
     });
+};
+
+export const getLiveQuestion = (_: Request, res: Response) => {
+  messagesRepository.datastore.findOne(
+    { isLive: true, isQuestion: true },
+    (err, question) => {
+      if (err) {
+        console.log(err, question);
+        res.status(500).json({ message: "Internal Server Error" });
+        return;
+      }
+
+      if (!question) {
+        res.status(204).json({ message: "No live question" });
+        return;
+      }
+
+      res.json(question);
+    }
+  );
+};
+
+export const postQuestion = (req: Request, res: Response) => {
+  messagesRepository.datastore.insert(req.body, (err, newQuestion) => {
+    if (err) {
+      console.log(err);
+      res.status(500).json({ message: "Internal Server Error" });
+      return;
+    }
+
+    res.status(201).json(newQuestion);
+  });
+};
+
+export const updateQuestion = (req: Request, res: Response) => {
+  const id = req.params.id;
+  const body = req.body;
+
+  console.log(`Updating message ${id} with body ${JSON.stringify(body)}`);
+
+  // Set all the live questions to false
+  messagesRepository.datastore.update(
+    { isLive: true },
+    { $set: { isLive: false } },
+    { multi: true },
+    (err, numReplaced) => {
+      if (err) {
+        console.log(err);
+        res.status(500).json({ message: "Internal Server Error" });
+        return;
+      }
+
+      console.log(`${numReplaced} messages updated to set isLive to false`);
+    }
+  );
+
+  updateMessage(req, res);
 };
