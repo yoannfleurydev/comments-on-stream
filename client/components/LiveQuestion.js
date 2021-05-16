@@ -10,7 +10,7 @@ export const LiveQuestion = () => {
   });
 
   return (
-    <Center bg="white" borderRadius="md" p={4} flexGrow="1">
+    <Center bg="white" borderRadius="md" p={4} shadow="md" minHeight="50%">
       <Text fontSize="3xl" fontWeight="bold" textTransform="uppercase">
         {question?.content ?? "Pas de question en cours"}
       </Text>

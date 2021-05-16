@@ -14,13 +14,13 @@ import { Question } from "./Question";
 
 export const Questions = (props) => {
   const queryClient = useQueryClient();
-  const { data: questions, error, isLoading } = useQuery(
-    "questions",
-    getQuestions,
-    {
-      refetchInterval: 1000,
-    }
-  );
+  const {
+    data: questions,
+    error,
+    isLoading,
+  } = useQuery("questions", getQuestions, {
+    refetchInterval: 1000,
+  });
 
   const isQuestionMutation = useMutation(putMessage, {
     onSettled: () => {
@@ -37,21 +37,20 @@ export const Questions = (props) => {
   if (error) return "Une erreur est survenue: " + error.message;
 
   return (
-    <Box {...props}>
-      <Flex justifyContent="space-between">
-        <Heading>Questions</Heading>
+    <Box overflow="auto" {...props}>
+      {/* <Flex justifyContent="space-between">
         <IconButton
           aria-label="Supprimer les questiona"
           icon={<MdDelete />}
           colorScheme="brand"
           // onClick={handleRemoveAll}
         />
-      </Flex>
-      <Box mt={4} height="87vh" overflow="auto">
+      </Flex> */}
+      <Box>
         {questions.length === 0 ? (
           <Empty>Aucune question sélectionnée pour le moment</Empty>
         ) : (
-          <Stack spacing={2}>
+          <Stack m={2} spacing={3}>
             {questions.map((question) => (
               <Question key={question._id} question={question} />
             ))}
