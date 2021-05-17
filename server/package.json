@@ -8,7 +8,9 @@
   "scripts": {
     "dev": "ts-node-dev src/index.ts",
     "start": "yarn dev",
-    "start:watch": "yarn dev"
+    "start:watch": "yarn dev",
+    "build": "tsc",
+    "serve": "node dist/index.js"
   },
   "dependencies": {
     "cors": "^2.8.5",
